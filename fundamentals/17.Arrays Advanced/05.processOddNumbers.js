@@ -1,9 +1,9 @@
-function processOddNumbers(number) {
-  let result = number
-    .filter((x, i) => i % 2 !== 0)
-    .map((x) => x * 2)
+function processOddNumbers(input) {
+  let array = input
+    .filter((element, index) => index % 2 !== 0)
+    .map((element) => element * 2)
     .reverse();
 
-  console.log(result.join(" "));
+  console.log(array.join(" "));
 }
 processOddNumbers([10, 15, 20, 25]);

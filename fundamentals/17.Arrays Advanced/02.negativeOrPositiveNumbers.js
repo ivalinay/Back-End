@@ -1,16 +1,15 @@
 function negativeOrPositiveNumbers(input) {
-  let numbers = [];
-  for (const element of input) {
-    let number = Number(element);
-    if (number < 0) {
-      numbers.unshift(number);
+  let newArray = [];
+
+  for (let i = 0; i < input.length; i++) {
+    let currentElement = input[i];
+    if (currentElement < 0) {
+      newArray.unshift(currentElement);
     } else {
-      numbers.push(number);
+      newArray.push(currentElement);
     }
   }
-  for (const number of numbers) {
-    console.log(number);
-  }
+  console.log(newArray.join("\n"));
 }
 negativeOrPositiveNumbers(["7", "-2", "8", "9"]);
 negativeOrPositiveNumbers(["3", "-2", "0", "-1"]);

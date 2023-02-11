@@ -1,6 +1,6 @@
-function sumFirstAndLast(numbers) {
-  let firstElement = Number(numbers[0]);
-  let lastElement = Number(numbers.pop());
+function sumFirstAndLast(input) {
+  let firstElement = Number(input[0]);
+  let lastElement = Number(input.pop());
 
   let sum = firstElement + lastElement;
   console.log(sum);

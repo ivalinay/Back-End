@@ -1,16 +1,14 @@
 function lastKNumbersSequence(length, k) {
-  let sequence = [1];
+  let result = [1];
 
   for (let i = 1; i < length; i++) {
-    let index = Math.max(sequence.length - k, 0);
-
-    let lastElement = sequence.slice(index);
     let sum = 0;
-    for (const el of lastElement) {
-      sum += el;
+    for (let j = i - 1; j >= i - k && j >= 0; j--) {
+      let currentElement = result[j];
+      sum += currentElement;
     }
-    sequence.push(sum);
+    result.push(sum);
   }
-  console.log(sequence.join(" "));
+  console.log(result.join(' '));
 }
 lastKNumbersSequence(6, 3);
