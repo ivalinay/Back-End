@@ -1,9 +1,8 @@
-function city(city) {
-  console.log("name -> " + city.name);
-  console.log("area -> " + city.area);
-  console.log("population -> " + city.population);
-  console.log("country -> " + city.country);
-  console.log("postCode -> " + city.postCode);
+function city(cityInfo) {
+  let entries = Object.entries(cityInfo);
+  for (let [key, value] of entries) {
+    console.log(`${key} -> ${value}`);
+  }
 }
 city({
   name: "Sofia",

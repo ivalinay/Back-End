@@ -1,7 +1,9 @@
 function convertToObject(jsonStr) {
-  let obj = JSON.parse(jsonStr);
+  let personInfo = JSON.parse(jsonStr);
 
-  for (const [key, value] of Object.entries(obj)) {
+  let entries = Object.entries(personInfo);
+
+  for (let [key, value] of entries) {
     console.log(`${key}: ${value}`);
   }
 }

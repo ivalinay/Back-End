@@ -1,4 +1,5 @@
-function cats(cats) {
+function cats(input) {
+    
   class Cat {
     constructor(name, age) {
       this.name = name;
@@ -8,11 +9,8 @@ function cats(cats) {
       console.log(`${this.name}, age ${this.age} says Meow`);
     }
   }
-
-  for (let i = 0; i < cats.length; i++) {
-    let catStr = cats[i].split(" ");
-    let name = catStr[0];
-    let age = catStr[1];
+  for (const element of input) {
+    let [name, age] = element.split(" ");
     let cat = new Cat(name, age);
     cat.meow();
   }
