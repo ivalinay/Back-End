@@ -17,13 +17,7 @@ function sequences(input) {
       parsedInput.push(array);
     }
   }
-  parsedInput.sort((a, b) => {
-    if (a.length !== b.length) {
-      return a.length - b.length;
-    } else {
-      return input.indexOf(JSON.stringify(a)) - input.indexOf(JSON.stringify(b));
-    }
-  });
+  parsedInput.sort((a, b) => a.length - b.length);
   parsedInput.forEach((array) => console.log(`[${array.join(", ")}]`));
 }
 
