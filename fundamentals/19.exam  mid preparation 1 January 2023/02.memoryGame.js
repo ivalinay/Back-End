@@ -20,15 +20,15 @@ ${sequenceOfElements.join(" ")}`);
       secondNumber < 0 ||
       secondNumber >= sequenceOfElements.length
     ) {
-      const middleIndex = Math.floor(sequenceOfElements.length / 2);
+      let middleIndex = Math.floor(sequenceOfElements.length / 2);
       sequenceOfElements.splice(middleIndex, 0, `-${i}a`);
       sequenceOfElements.splice(middleIndex + 1, 0, `-${i}a`);
       console.log(`Invalid input! Adding additional elements to the board`);
       continue;
     }
 
-    const twin1 = sequenceOfElements[firstNumber];
-    const twin2 = sequenceOfElements[secondNumber];
+    let twin1 = sequenceOfElements[firstNumber];
+    let twin2 = sequenceOfElements[secondNumber];
 
     if (twin1 === twin2) {
       sequenceOfElements.splice(firstNumber, 1);

@@ -3,7 +3,7 @@ function theLift(input) {
   let wagons = input[1].split(" ").map(Number);
 
   for (let i = 0; i < wagons.length; i++) {
-    const peopleInWagon = wagons[i];
+    let peopleInWagon = wagons[i];
     if (peopleInWagon === 4) {
       continue;
     }

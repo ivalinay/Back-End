@@ -7,10 +7,10 @@ function movingTarget(input) {
   let currentLine = input.shift();
 
   while (currentLine != "End") {
-    const lineArr = currentLine.split(" ");
-    const command = lineArr[0];
-    const index = Number(lineArr[1]);
-    const power = Number(lineArr[2]);
+    let lineArr = currentLine.split(" ");
+    let command = lineArr[0];
+    let index = Number(lineArr[1]);
+    let power = Number(lineArr[2]);
 
     switch (command) {
       case "Shoot":
@@ -33,9 +33,9 @@ function movingTarget(input) {
         }
         break;
       case "Strike":
-        const radius = power;
-        const lowerIndex = index - radius;
-        const upperIndex = index + radius;
+        let radius = power;
+        let lowerIndex = index - radius;
+        let  upperIndex = index + radius;
 
         if (targets[lowerIndex] && targets[upperIndex]) {
           targets.splice(lowerIndex, radius * 2 + 1);
