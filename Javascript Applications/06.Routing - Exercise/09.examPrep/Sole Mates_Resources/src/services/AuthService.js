@@ -15,7 +15,8 @@ export class AuthService extends BaseApiService {
       body: JSON.stringify(user),
     };
     let result = await this._internalFetchJson(url, options);
-    this.sessionService.setAccessToken(result.setAccessToken);
+    this.sessionService.setAccessToken(result.accessToken);
+    this.sessionService.setCurrentUserId(result._id);
     return result;
   }
 
@@ -43,10 +44,14 @@ export class AuthService extends BaseApiService {
     };
     let result = await this._internalFetchJson(url, options);
     this.sessionService.removeAccessToken();
+    this.sessionService.removeCurrentUserId();
     return result;
   }
 
   isUserLoggedIn() {
     return this.sessionService.getAccessToken() != undefined;
+  }
+  getUserId() {
+    return this.sessionService.getCurrentUserId();
   }
 }

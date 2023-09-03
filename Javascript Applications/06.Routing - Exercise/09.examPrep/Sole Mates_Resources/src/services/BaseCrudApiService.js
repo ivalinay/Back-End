@@ -11,6 +11,7 @@ export class BaseCrudApiService extends BaseApiService {
     let options = {
       method: "Get",
     };
+    let url = `${this.resourceUrl}`;
     let result = await this._internalFetchJson(this.resourceUrl, options);
     return result;
   }
@@ -24,12 +25,21 @@ export class BaseCrudApiService extends BaseApiService {
     return result;
   }
 
+  async getByBrand(brand) {
+    let options = {
+      method: "Get",
+    };
+    let url = `${this.resourceUrl}?where=brand%20LIKE%20%22${brand}%22`;
+    let result = await this._internalFetchJson(url, options);
+    return result;
+  }
+
   async create(item) {
     let options = {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
-        "X-Authorization": this.sessionService.getAccesToken(),
+        "X-Authorization": this.sessionService.getAccessToken(),
       },
       body: JSON.stringify(item),
     };
@@ -43,7 +53,7 @@ export class BaseCrudApiService extends BaseApiService {
       method: "Put",
       headers: {
         "Content-Type": "application/json",
-        "X-Authorization": this.sessionService.getAccesToken(),
+        "X-Authorization": this.sessionService.getAccessToken(),
       },
       body: JSON.stringify(item),
     };
@@ -56,7 +66,7 @@ export class BaseCrudApiService extends BaseApiService {
     let options = {
       method: "Delete",
       headers: {
-        "X-Authorization": this.sessionService.getAccesToken(),
+        "X-Authorization": this.sessionService.getAccessToken(),
       },
     };
     let url = `${this.resourceUrl}/${id}`;

@@ -3,8 +3,8 @@ const { expect } = require("chai");
 
 const host = "http://localhost:3000"; // Application host (NOT service host - that can be anything)
 const interval = 600;
-const DEBUG = false;
-const slowMo = 500;
+const DEBUG = true;
+const slowMo = 2000;
 
 const mockData = require("./mock-data.json");
 
@@ -26,12 +26,7 @@ let page;
 describe("E2E tests", function () {
   // Setup
   this.timeout(DEBUG ? 120000 : 7000);
-  before(
-    async () =>
-      (browser = await chromium.launch(
-        DEBUG ? { headless: false, slowMo } : {}
-      ))
-  );
+  before(async () => (browser = await chromium.launch(DEBUG ? { headless: false, slowMo } : {})));
   after(async () => await browser.close());
   beforeEach(async () => {
     context = await browser.newContext();
@@ -79,10 +74,7 @@ describe("E2E tests", function () {
       await page.fill('[name="password"]', data.password);
       await page.fill('[name="re-password"]', data.password);
 
-      const [request] = await Promise.all([
-        onRequest(),
-        page.click('[type="submit"]'),
-      ]);
+      const [request] = await Promise.all([onRequest(), page.click('[type="submit"]')]);
 
       const postData = JSON.parse(request.postData());
 
@@ -123,10 +115,7 @@ describe("E2E tests", function () {
       await page.fill('[name="email"]', data.email);
       await page.fill('[name="password"]', data.password);
 
-      const [request] = await Promise.all([
-        onRequest(),
-        page.click('[type="submit"]'),
-      ]);
+      const [request] = await Promise.all([onRequest(), page.click('[type="submit"]')]);
 
       const postData = JSON.parse(request.postData());
       expect(postData.email).to.equal(data.email);
@@ -151,10 +140,7 @@ describe("E2E tests", function () {
 
       await page.waitForTimeout(interval);
 
-      const [request] = await Promise.all([
-        onRequest(),
-        page.click("nav >> text=Logout"),
-      ]);
+      const [request] = await Promise.all([onRequest(), page.click("nav >> text=Logout")]);
 
       const token = request.headers()["x-authorization"];
       expect(request.method()).to.equal("GET");
@@ -207,11 +193,7 @@ describe("E2E tests", function () {
       await page.goto(host);
       await page.waitForTimeout(interval);
 
-      expect(
-        await page.isVisible(
-          "text=Browse through the shoe collectibles of our users"
-        )
-      ).to.be.true;
+      expect(await page.isVisible("text=Browse through the shoe collectibles of our users")).to.be.true;
     });
 
     it("Show home page [ 2.5 Points ]", async () => {
@@ -243,9 +225,7 @@ describe("E2E tests", function () {
       await page.click("text=Dashboard");
       await page.waitForTimeout(interval);
 
-      const visible = await page.isVisible(
-        "text=There are no items added yet."
-      );
+      const visible = await page.isVisible("text=There are no items added yet.");
       expect(visible).to.be.true;
     });
 
@@ -260,9 +240,7 @@ describe("E2E tests", function () {
       await page.waitForTimeout(interval);
 
       await page.waitForSelector("#dashboard");
-      const brands = await page.$$eval(".card p .brand", (t) =>
-        t.map((s) => s.textContent)
-      );
+      const brands = await page.$$eval(".card p .brand", (t) => t.map((s) => s.textContent));
 
       expect(brands.length).to.equal(2);
       expect(brands[0]).to.contains(`${data[0].brand}`);
@@ -290,12 +268,8 @@ describe("E2E tests", function () {
       await page.waitForTimeout(interval);
 
       await page.waitForSelector("#dashboard");
-      const brands = await page.$$eval(".card p .brand", (t) =>
-        t.map((s) => s.textContent)
-      );
-      const models = await page.$$eval(".card p .model", (t) =>
-        t.map((s) => s.textContent)
-      );
+      const brands = await page.$$eval(".card p .brand", (t) => t.map((s) => s.textContent));
+      const models = await page.$$eval(".card p .model", (t) => t.map((s) => s.textContent));
 
       expect(brands).to.contains(`${data[0].brand}`);
       expect(models).to.contains(`${data[0].model}`);
@@ -348,10 +322,7 @@ describe("E2E tests", function () {
       await page.fill('[name="designer"]', data.designer);
       await page.fill('[name="value"]', data.value);
 
-      const [request] = await Promise.all([
-        onRequest(),
-        page.click('[type="submit"]'),
-      ]);
+      const [request] = await Promise.all([onRequest(), page.click('[type="submit"]')]);
 
       const postData = JSON.parse(request.postData());
 
@@ -381,23 +352,11 @@ describe("E2E tests", function () {
 
       await page.waitForTimeout(interval);
 
-      const brand = await page.$$eval("#info-wrapper p #details-brand", (t) =>
-        t.map((s) => s.textContent)
-      );
-      const model = await page.$$eval("#info-wrapper p #details-model", (t) =>
-        t.map((s) => s.textContent)
-      );
-      const release = await page.$$eval(
-        "#info-wrapper p #details-release",
-        (t) => t.map((s) => s.textContent)
-      );
-      const designer = await page.$$eval(
-        "#info-wrapper p #details-designer",
-        (t) => t.map((s) => s.textContent)
-      );
-      const value = await page.$$eval("#info-wrapper p #details-value", (t) =>
-        t.map((s) => s.textContent)
-      );
+      const brand = await page.$$eval("#info-wrapper p #details-brand", (t) => t.map((s) => s.textContent));
+      const model = await page.$$eval("#info-wrapper p #details-model", (t) => t.map((s) => s.textContent));
+      const release = await page.$$eval("#info-wrapper p #details-release", (t) => t.map((s) => s.textContent));
+      const designer = await page.$$eval("#info-wrapper p #details-designer", (t) => t.map((s) => s.textContent));
+      const value = await page.$$eval("#info-wrapper p #details-value", (t) => t.map((s) => s.textContent));
 
       expect(brand).to.contains(data.brand);
       expect(model).to.contains(data.model);
@@ -466,9 +425,7 @@ describe("E2E tests", function () {
 
       await page.waitForSelector("form");
 
-      const inputs = await page.$$eval(".form .edit-form input", (t) =>
-        t.map((i) => i.value)
-      );
+      const inputs = await page.$$eval(".form .edit-form input", (t) => t.map((i) => i.value));
 
       expect(inputs[0]).to.contains(data.brand);
       expect(inputs[1]).to.contains(data.model);
@@ -478,7 +435,7 @@ describe("E2E tests", function () {
       expect(inputs[5]).to.contains(data.value);
     });
 
-    it("Edit does NOT work with empty fields [ 2.5 Points ]", async () => {
+    it.only("Edit does NOT work with empty fields [ 2.5 Points ]", async () => {
       const data = mockData.catalog[0];
       const user = mockData.users[0];
       const { get, put } = await handle(endpoints.delete(data._id));
@@ -537,10 +494,7 @@ describe("E2E tests", function () {
       await page.fill('[name="model"]', data.model + "edit");
       await page.fill('[name="release"]', data.release + "edit");
 
-      const [request] = await Promise.all([
-        onRequest(),
-        page.click('[type="submit"]'),
-      ]);
+      const [request] = await Promise.all([onRequest(), page.click('[type="submit"]')]);
 
       const postData = JSON.parse(request.postData());
 
@@ -613,9 +567,7 @@ describe("E2E tests", function () {
 
       await page.waitForTimeout(interval);
       await page.waitForSelector("#search-container");
-      const brands = await page.$$eval(".card p .brand", (t) =>
-        t.map((s) => s.textContent)
-      );
+      const brands = await page.$$eval(".card p .brand", (t) => t.map((s) => s.textContent));
 
       expect(brands.length).to.equal(2);
       expect(brands[0]).to.contains(`${data[0].brand}`);
@@ -695,11 +647,7 @@ async function setupContext(context) {
     get: mockData.catalog[2],
   });
 
-  await handleContext(
-    endpoints.profile("0001"),
-    { get: mockData.catalog.slice(0, 2) },
-    context
-  );
+  await handleContext(endpoints.profile("0001"), { get: mockData.catalog.slice(0, 2) }, context);
 
   await handleContext(endpoints.total("1001"), { get: 6 }, context);
   await handleContext(endpoints.total("1002"), { get: 4 }, context);

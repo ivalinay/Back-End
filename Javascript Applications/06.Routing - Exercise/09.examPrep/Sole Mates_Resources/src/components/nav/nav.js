@@ -9,10 +9,13 @@ export class NavComponent {
   }
 
   async _showView(ctx, next) {
+    console.log('called');
     let isUserLoggedIn = this.authService.isUserLoggedIn();
     let template = this.templateFunction(isUserLoggedIn, this.logoutHandler);
     this.renderHandler(template);
-    next();
+    if (next) {
+      next();
+    }
   }
   async _logoutHandler() {
     await this.authService.logout();
