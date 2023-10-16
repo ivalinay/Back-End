@@ -1,27 +1,5 @@
 const uniqid = require("uniqid");
-const cubes = [
-  {
-    id: "un0jndnqlmtg3mgn",
-    name: "Kotkata Pesho",
-    description: "asd",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Scramble.svg/800px-Scramble.svg.png",
-    difficultyLevel: 1,
-  },
-  {
-    id: "un0jndnqlmtg3rm3",
-    name: "sad",
-    description: "asd",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Scramble.svg/800px-Scramble.svg.png",
-    difficultyLevel: 1,
-  },
-  {
-    id: "un0jndnqlmtg4are",
-    name: "cube3",
-    description: "n/a",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Scramble.svg/800px-Scramble.svg.png",
-    difficultyLevel: 3,
-  },
-];
+const cubes = [];
 
 exports.create = (cubeData) => {
   const newCube = {
