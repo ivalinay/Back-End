@@ -17,8 +17,12 @@ handlebarsConfig(app);
 
 // Connecting to the database
 dbConnect()
-  .then(() => console.log("Successfully connected to the DB!"))
-  .catch((err) => console.log(`Error while connecting in DB: ${err}`));
+  .then(() => {
+    console.log("Successfully connected to the database!");
+  })
+  .catch((err) => {
+    console.log(`Error while connecting to the DB. Error: ${err}`);
+  });
 
 // Routing
 app.use(routes);
