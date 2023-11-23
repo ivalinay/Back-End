@@ -11,13 +11,13 @@ app.use(express.urlencoded({ extended: false }));
 const users = {};
 const SECRET = "OurBiggestSecret";
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   const payload = { id: 123, username: "Pesho", age: "23" };
   const secret = "OurBiggestSecret";
   const options = { expiresIn: "3d" };
 
   //             Asyncronous code
-  const token = await jwt.sign(payload, SECRET, options);
+  const token = jwt.sign(payload, secret, options);
   res.send(token);
 });
 
@@ -45,11 +45,6 @@ app.get("/login", (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const preserveHash = users[username]?.password;
-
-  if (preserveHash == undefined) {
-    res.status(401);
-    return;
-  }
 
   //           removes the salt and compares pure hashes
   const isValid = await bcrypt.compare(password, preserveHash);
@@ -97,7 +92,7 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/profile", async (req, res) => {
-  const token = req.cookies["token"];
+  const token = req.cookies("token");
   console.log({ token });
 
   if (token) {

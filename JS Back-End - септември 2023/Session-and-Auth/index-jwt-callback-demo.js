@@ -1,6 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const jwt = require("./utils/jwt-promisify");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const PORT = 5050;
 const app = express();
@@ -11,20 +11,20 @@ app.use(express.urlencoded({ extended: false }));
 const users = {};
 const SECRET = "OurBiggestSecret";
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   const payload = { id: 123, username: "Pesho", age: "23" };
   const secret = "OurBiggestSecret";
   const options = { expiresIn: "3d" };
 
-  //             Asyncronous code
-  const token = await jwt.sign(payload, SECRET, options);
+  //             syncronous code
+  const token = jwt.sign(payload, secret, options);
   res.send(token);
 });
 
 app.get("/verification/:token", (req, res) => {
   const { token } = req.params;
 
-  //            Asyncronous code
+  //            syncronous code
   const result = jwt.verify(token, "OurBiggestSecret");
   console.log({ result });
   res.send("Ok");
@@ -46,29 +46,23 @@ app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const preserveHash = users[username]?.password;
 
-  if (preserveHash == undefined) {
-    res.status(401);
-    return;
-  }
-
   //           removes the salt and compares pure hashes
   const isValid = await bcrypt.compare(password, preserveHash);
 
   if (isValid) {
     // res.send("Successfully Authenticated!");
     const payload = { username };
+    jwt.sign(payload, SECRET, { expiresIn: "3d" }, (err, token) => {
+      if (err) {
+        return res.redirect("/404");
+      }
 
-    try {
-      const token = await jwt.sign(payload, SECRET, { expiresIn: "3d" });
-
+      // Set jwt as cookie
       res.cookie("token", token);
       res.redirect("/profile");
-    } catch (error) {
-      console.log({ error });
-      res.redirect("/404");
-    }
+    });
   } else {
-    res.status(401).send("Unauthorized :( ");
+    res.status(401).send("Unauthorizated! :( ");
   }
 });
 
@@ -97,16 +91,16 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/profile", async (req, res) => {
-  const token = req.cookies["token"];
+  const token = req.cookies("token");
   console.log({ token });
 
   if (token) {
-    try {
-      const payload = await jwt.verify(token, SECRET);
-      res.send(`Profile: ${payload.username}`);
-    } catch (error) {
-      return res.status(401).send("Unauthorized!");
-    }
+    jwt.verify(token, SECRET, (err, payload) => {
+      if (err) {
+        return res.status(401).send("Unauthorized!");
+      }
+      return res.send(`Profile: ${payload.username}`);
+    });
   } else {
     return res.redirect("/login");
   }

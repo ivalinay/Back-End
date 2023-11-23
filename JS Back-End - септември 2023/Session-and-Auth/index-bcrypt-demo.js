@@ -1,6 +1,5 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const jwt = require("./utils/jwt-promisify");
 const bcrypt = require("bcrypt");
 const PORT = 5050;
 const app = express();
@@ -9,25 +8,24 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 const users = {};
-const SECRET = "OurBiggestSecret";
 
-app.get("/", async (req, res) => {
-  const payload = { id: 123, username: "Pesho", age: "23" };
-  const secret = "OurBiggestSecret";
-  const options = { expiresIn: "3d" };
+app.get("/", (req, res) => {
+  // let id;
+  // const userId = req.cookies["userId"];
 
-  //             Asyncronous code
-  const token = await jwt.sign(payload, SECRET, options);
-  res.send(token);
-});
+  // if (userId) {
+  //   id = userId;
+  //   console.log({ session });
+  // } else {
+  //   id = uuid();
 
-app.get("/verification/:token", (req, res) => {
-  const { token } = req.params;
+  //   session[id] = {
+  //     secret: "my secret",
+  //   };
+  //   res.cookie("userId", id);
+  // }
 
-  //            Asyncronous code
-  const result = jwt.verify(token, "OurBiggestSecret");
-  console.log({ result });
-  res.send("Ok");
+  res.send("ok! ID: " + id);
 });
 
 app.get("/login", (req, res) => {
@@ -55,20 +53,9 @@ app.post("/login", async (req, res) => {
   const isValid = await bcrypt.compare(password, preserveHash);
 
   if (isValid) {
-    // res.send("Successfully Authenticated!");
-    const payload = { username };
-
-    try {
-      const token = await jwt.sign(payload, SECRET, { expiresIn: "3d" });
-
-      res.cookie("token", token);
-      res.redirect("/profile");
-    } catch (error) {
-      console.log({ error });
-      res.redirect("/404");
-    }
+    res.send("Successfully Authenticated!");
   } else {
-    res.status(401).send("Unauthorized :( ");
+    res.status(401).send("Unauthorized! :( ");
   }
 });
 
@@ -94,22 +81,6 @@ app.post("/register", async (req, res) => {
   console.log({ users });
 
   res.redirect("/login");
-});
-
-app.get("/profile", async (req, res) => {
-  const token = req.cookies["token"];
-  console.log({ token });
-
-  if (token) {
-    try {
-      const payload = await jwt.verify(token, SECRET);
-      res.send(`Profile: ${payload.username}`);
-    } catch (error) {
-      return res.status(401).send("Unauthorized!");
-    }
-  } else {
-    return res.redirect("/login");
-  }
 });
 
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT} ...`));
