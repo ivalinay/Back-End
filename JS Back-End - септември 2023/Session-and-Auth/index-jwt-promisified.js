@@ -12,11 +12,11 @@ const users = {};
 const SECRET = "OurBiggestSecret";
 
 app.get("/", (req, res) => {
-  const payload = { id: 123, username: "Pesho", age: "23" };
+  const payload = { id: 123, username: "Pesho", age: 23 };
   const secret = "OurBiggestSecret";
   const options = { expiresIn: "3d" };
 
-  //             Asyncronous code
+  //            Asyncronous code
   const token = jwt.sign(payload, secret, options);
   res.send(token);
 });
@@ -32,22 +32,22 @@ app.get("/verification/:token", (req, res) => {
 
 app.get("/login", (req, res) => {
   res.send(`
-  <h3>Login</h3>
-<form method="post">
-  <label for="username">Username</label>
-  <input type="text" name="username" />
-  <label for="password">Password</label>
-  <input type="password" name="password" />
-  <input type="submit" value="Submit" />
-</form>`);
+          <h3>Login </h3>
+          <form method="post">
+              <label for="username">Username</label>
+              <input type="text" name="username" />
+              <label for="password">Password</label>
+              <input type="password" name="password" />
+              <input type="submit" value="Submit" />
+            </form>`);
 });
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  const preserveHash = users[username]?.password;
+  const preservedHash = users[username]?.password;
 
-  //           removes the salt and compares pure hashes
-  const isValid = await bcrypt.compare(password, preserveHash);
+  //                        removes the salt and compares pure hashes
+  const isValid = await bcrypt.compare(password, preservedHash);
 
   if (isValid) {
     // res.send("Successfully Authenticated!");
@@ -63,20 +63,20 @@ app.post("/login", async (req, res) => {
       res.redirect("/404");
     }
   } else {
-    res.status(401).send("Unauthorized :( ");
+    res.status(401).send("Unauthorized! :( ");
   }
 });
 
 app.get("/register", (req, res) => {
   res.send(`
-  <h3>Register</h3>
-<form method="post">
-  <label for="username">Username</label>
-  <input type="text" name="username" />
-  <label for="password">Password</label>
-  <input type="password" name="password" />
-  <input type="submit" value="Submit" />
-</form>`);
+          <h3>Register </h3>
+          <form method="post">
+              <label for="username">Username</label>
+              <input type="text" name="username" />
+              <label for="password">Password</label>
+              <input type="password" name="password" />
+              <input type="submit" value="Submit" />
+            </form>`);
 });
 
 app.post("/register", async (req, res) => {
@@ -86,13 +86,11 @@ app.post("/register", async (req, res) => {
   const hash = await bcrypt.hash(password, salt);
   users[username] = { password: hash };
 
-  console.log({ users });
-
   res.redirect("/login");
 });
 
 app.get("/profile", async (req, res) => {
-  const token = req.cookies("token");
+  const token = req.cookies["token"];
   console.log({ token });
 
   if (token) {

@@ -10,9 +10,10 @@ app.use(
   session({
     secret: "My biggest secret ever!",
     resave: false,
-    cookies: { secure: false },
+    cookie: { secure: false },
   })
 );
+
 app.get("/", (req, res) => {
   let id;
   const userId = req.cookies["userId"];
