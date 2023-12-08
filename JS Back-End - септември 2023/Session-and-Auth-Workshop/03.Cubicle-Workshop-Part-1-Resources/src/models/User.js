@@ -1,11 +1,17 @@
-const mongoose = require('mongoose')
-
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    username: String,
-    password: String, 
+  username: String,
+  password: String,
 });
 
-const User = mongoose.model('User', userSchema)
+// TODO: if the user already exists, throw error
+userSchema.virtual("repeatPassword").set(function (value) {
+  if (value !== this.password) {
+    throw new mongoose.MongooseError("Password missmatch!");
+  }
+});
 
-module.exports = User
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
