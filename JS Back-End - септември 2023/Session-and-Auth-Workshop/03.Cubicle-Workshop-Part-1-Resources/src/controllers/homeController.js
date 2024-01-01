@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
   res.render("index", { cubes, search, from, to });
 });
 
-router.get("/about", (req, res) => {
+router.get("/about",  (req, res) => {
   res.render("about");
 });
 
