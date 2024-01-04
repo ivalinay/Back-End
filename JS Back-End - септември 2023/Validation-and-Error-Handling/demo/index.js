@@ -1,4 +1,5 @@
 const express = require("express");
+const { isNameValid , isPasswordValid} = require("./utils/validator");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -21,16 +22,16 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   const { name, password } = req.body;
-  console.log(name, password);
 
-  if (!name || name.length <= 4) {
+  if (!isNameValid(name)) {
     return res.status(400).send("Invalid name!");
   }
 
-  if (!password || password.length < 5) {
-    return res.status(400).send("Invalid password");
+  if (!isPasswordValid(password)) {
+    return res.status(400).send("Invalid password!");
   }
 
+  console.log(name, password);
   res.send("Ok!");
 });
 
