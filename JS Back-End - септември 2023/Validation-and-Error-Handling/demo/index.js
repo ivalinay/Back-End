@@ -1,5 +1,6 @@
 const express = require("express");
-const { isNameValid , isPasswordValid} = require("./utils/validator");
+const { isNameValid, isPasswordValid } = require("./utils/validator");
+const { isPasswordValidLength } = require("./midlewares/midleware");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -20,15 +21,17 @@ app.get("/", (req, res) => {
   `);
 });
 
-app.post("/", (req, res) => {
+//Saas => software as a service
+app.post("/", isPasswordValidLength, (req, res) => {
   const { name, password } = req.body;
 
+  //Guard clauses!
   if (!isNameValid(name)) {
     return res.status(400).send("Invalid name!");
   }
 
   if (!isPasswordValid(password)) {
-    return res.status(400).send("Invalid password!");
+    return res.status(400).send("Invalid password from custom validator!");
   }
 
   console.log(name, password);
