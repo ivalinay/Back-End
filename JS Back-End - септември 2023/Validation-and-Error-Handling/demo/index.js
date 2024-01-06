@@ -1,6 +1,8 @@
 const express = require("express");
 const { isNameValid, isPasswordValid } = require("./utils/validator");
 const { isPasswordValidLength } = require("./midlewares/midleware");
+const isStrongPassword = require("validator/lib/isStrongPassword");
+const isEmail = require("validator/lib/isEmail");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -13,6 +15,9 @@ app.get("/", (req, res) => {
     <label for="name">Name</label>
     <input type="name" name="name" id="name" />
 
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" />
+
     <label for="password">Password</label>
     <input type="password" name="password" id="password" />
 
@@ -23,21 +28,27 @@ app.get("/", (req, res) => {
 
 //Saas => software as a service
 app.post("/", isPasswordValidLength, (req, res) => {
-  const { name, password } = req.body;
+  const { name, password, email } = req.body;
+  console.log(name, password, email);
 
   //Guard clauses!
   if (!isNameValid(name)) {
-    return res.status(400).send("Invalid name!");
+    return res.status(400).send("Invalid name from custom validator!");
   }
 
-  if (!isPasswordValid(password)) {
-    return res.status(400).send("Invalid password from custom validator!");
+  // if (!isPasswordValid(password)) {
+  //   return res.status(400).send("Invalid password from custom validator!");
+  // }
+
+  if (!isEmail(email)) {
+    return res.status(404).send("Email is not valid!");
   }
 
-  console.log(name, password);
+  if (!isStrongPassword(password)) {
+    return res.status(404).send("Weak password!");
+  }
+
   res.send("Ok!");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT} ...`);
-});
+app.listen(PORT, () => console.log(`Server is listening on port ${PORT} ...`));
