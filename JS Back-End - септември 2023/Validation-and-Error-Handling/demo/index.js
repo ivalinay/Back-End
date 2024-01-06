@@ -3,6 +3,7 @@ const { isNameValid, isPasswordValid } = require("./utils/validator");
 const { isPasswordValidLength } = require("./midlewares/midleware");
 const isStrongPassword = require("validator/lib/isStrongPassword");
 const isEmail = require("validator/lib/isEmail");
+const { body, validationResult } = require("express-validator");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -16,7 +17,7 @@ app.get("/", (req, res) => {
     <input type="name" name="name" id="name" />
 
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" />
+    <input type="text" name="email" id="email" />
 
     <label for="password">Password</label>
     <input type="password" name="password" id="password" />
@@ -26,10 +27,21 @@ app.get("/", (req, res) => {
   `);
 });
 
+const bodyValidatePassword = body("password")
+.isLength({ min: 4, max: 15 })
+.withMessage("Invalid password from express validator!");
+
+
+const bodyValidateEmail = body('email')
+.isEmail()
+.withMessage('Invalid email from express validator!');
+
 //Saas => software as a service
-app.post("/", isPasswordValidLength, (req, res) => {
+app.post("/", bodyValidatePassword, bodyValidateEmail, (req, res) => {
   const { name, password, email } = req.body;
   console.log(name, password, email);
+
+  const errors = validationResult(req);
 
   //Guard clauses!
   if (!isNameValid(name)) {
@@ -40,12 +52,16 @@ app.post("/", isPasswordValidLength, (req, res) => {
   //   return res.status(400).send("Invalid password from custom validator!");
   // }
 
-  if (!isEmail(email)) {
-    return res.status(404).send("Email is not valid!");
-  }
+  // if (!isEmail(email)) {
+  //   return res.status(404).send("Email is not valid!");
+  // }
 
-  if (!isStrongPassword(password)) {
-    return res.status(404).send("Weak password!");
+  // if (!isStrongPassword(password)) {
+  //   return res.status(404).send("Weak password!");
+  // }
+
+  if (!errors.isEmpty()) {
+    return res.status(404).send(`Error msg: ${errors.array()[0].msg}`);
   }
 
   res.send("Ok!");
