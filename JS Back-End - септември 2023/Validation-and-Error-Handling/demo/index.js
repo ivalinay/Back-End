@@ -27,15 +27,9 @@ app.get("/", (req, res) => {
   `);
 });
 
-const bodyValidatePassword = body("password")
-.isLength({ min: 4, max: 15 })
-.withMessage("Invalid password from express validator!");
+const bodyValidatePassword = body("password").isLength({ min: 4, max: 15 }).withMessage("Invalid password from express validator!");
 
-
-const bodyValidateEmail = body('email')
-.isEmail()
-.normalizeEmail()
-.withMessage('Invalid email from express validator!');
+const bodyValidateEmail = body("email").isEmail().normalizeEmail().withMessage("Invalid email from express validator!");
 
 //Saas => software as a service
 app.post("/", bodyValidatePassword, bodyValidateEmail, (req, res) => {
