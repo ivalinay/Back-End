@@ -8,9 +8,15 @@ router.get("/register", (req, res) => {
 router.post("/register", async (req, res) => {
   const { username, password, repeatPassword } = req.body;
 
-  await userService.register({ username, password, repeatPassword });
+  try {
+    await userService.register({ username, password, repeatPassword });
+    res.redirect("/users/login");
+  } catch (err) {
+    const { message: errorMessage } = err;
+    console.log(errorMessage);
 
-  res.redirect("/users/login");
+    res.status(404).render("user/register", {errorMessage});
+  }
 });
 
 router.get("/login", (req, res) => {
