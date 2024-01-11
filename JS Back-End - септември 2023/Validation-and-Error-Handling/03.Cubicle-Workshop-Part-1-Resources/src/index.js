@@ -4,9 +4,11 @@ const express = require("express");
 const handlebarsConfig = require("./config/handlebarsConfig");
 const expressConfig = require("./config/expressConfig");
 const dbConnect = require("./config/dbConfig");
+const errorHandler= require('./middlewares/errorHandlerMiddleware')
 
 const { PORT } = require("./constants");
 const routes = require("./router");
+const errorHandlerMiddleware = require("./middlewares/errorHandlerMiddleware");
 
 // Lacal variables
 const app = express();
@@ -26,5 +28,7 @@ dbConnect()
 
 // Routing
 app.use(routes);
+app.use(errorHandler)
+
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}...`));
