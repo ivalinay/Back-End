@@ -4,6 +4,14 @@ const routes = require("./routes");
 const app = express();
 const PORT = 3030;
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Orgin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+
+  next()
+});
+
 console.log("works!");
 
 app.get("/", (req, res, next) => {
