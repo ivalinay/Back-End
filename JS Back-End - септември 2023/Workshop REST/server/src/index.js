@@ -1,18 +1,21 @@
 const express = require("express");
+const cors = require("cors");
+
 const routes = require("./routes");
 
 const app = express();
 const PORT = 3030;
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Orgin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "*");
-  res.setHeader("Access-Control-Allow-Headers", "*");
+//Middleware Configurations
+app.use(cors())
 
-  next()
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Orgin", "*");
+//   res.setHeader("Access-Control-Allow-Methods", "*");
+//   res.setHeader("Access-Control-Allow-Headers", "*");
 
-console.log("works!");
+//   next()
+// });
 
 app.get("/", (req, res, next) => {
   res.send("Hello from RESTful API!");
