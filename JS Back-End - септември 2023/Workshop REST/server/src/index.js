@@ -7,6 +7,8 @@ const app = express();
 const PORT = 3030;
 
 //Middleware Configurations
+app.use(express.urlencoded({extended: false })) // urlencoded, querystring
+app.use(express.json()); // application/json -> AJAX requests
 app.use(cors())
 
 // app.use((req, res, next) => {
