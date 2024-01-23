@@ -5,8 +5,20 @@ router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
     await userService.register({ email, password });
-    
-    res.json({ message: 'Registered Successfully!' });
+
+    res.json({ message: "Registered Successfully!" });
+  } catch ({ message }) {
+    res.status(400).json({ message });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    await userService.login({ email, password });
+
+    res.json({ message: "LoggedIn Successfully!" });
+  
   } catch ({ message }) {
     res.status(400).json({ message });
   }

@@ -11,7 +11,7 @@ const PORT = 3030;
 mongoose
   .connect("mongodb://127.0.0.1:27017/furnitures")
   .then(() => console.log(`Successfully connected to the DB!`))
-  .then((err) => console.log(`Error while connecting to the DB!`, err));
+  .catch((err) => console.log(`Error while connecting to the DB!`, err));
 
 //Middleware Configurations
 app.use(express.urlencoded({ extended: false })); // urlencoded, querystring
