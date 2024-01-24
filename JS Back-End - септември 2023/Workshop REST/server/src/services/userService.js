@@ -16,9 +16,14 @@ exports.login = async (userData) => {
   if (!isValid) {
     throw new Error("Invalid email or password");
   }
-  const payload = {_id: user._id, email: user.email};
+  const payload = { _id: user._id, email: user.email };
   const token = jwt.sign(payload, "SOME_SECRET", { expiresIn: "2d" }); // 2d too much
 
-
-
+  const result = {
+    _id: user._id,
+    accessToken: token,
+    email: user.email,
+  };
+  
+  return result;
 };
