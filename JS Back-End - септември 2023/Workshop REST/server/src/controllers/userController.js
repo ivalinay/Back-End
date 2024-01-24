@@ -18,7 +18,6 @@ router.post("/login", async (req, res) => {
     await userService.login({ email, password });
 
     res.json({ message: "LoggedIn Successfully!" });
-  
   } catch ({ message }) {
     res.status(400).json({ message });
   }
