@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 exports.register = (userData) => User.create(userData);
 
-exports.login = async (userData) => {
+exports.login = async ({ email, password }) => {
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -16,6 +16,12 @@ exports.login = async (userData) => {
   if (!isValid) {
     throw new Error("Invalid email or password");
   }
+
+  const result = getResult(user);
+  return result;
+};
+
+function getResult(user) {
   const payload = { _id: user._id, email: user.email };
   const token = jwt.sign(payload, "SOME_SECRET", { expiresIn: "2d" }); // 2d too much
 
@@ -24,6 +30,5 @@ exports.login = async (userData) => {
     accessToken: token,
     email: user.email,
   };
-  
   return result;
-};
+}
