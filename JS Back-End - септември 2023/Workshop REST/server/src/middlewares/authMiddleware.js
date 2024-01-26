@@ -8,9 +8,9 @@ exports.auth = (req, res, next) => {
       const decodedToken = jwt.verify(token, "SOME_SECRET");
       req.user = decodedToken;
 
-      next()
+      next();
     } catch (error) {
-      res.status(401).json({message: 'You are not authorized!'})
+      res.status(401).json({ message: "You are not authorized!" });
     }
   } else {
     next();
