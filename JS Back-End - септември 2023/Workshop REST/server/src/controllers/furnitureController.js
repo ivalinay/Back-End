@@ -32,8 +32,13 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/:furnitureId", async (req, res) => {
-  const { furnitureId } = req.params;
-  await furnitureService.getOne(furnitureId);
+  try {
+    const { furnitureId } = req.params;
+    const furniture = await furnitureService.getOne(furnitureId);
+    res.json(furniture);
+  } catch ({ message }) {
+    res.status(400).json({ message });
+  }
 });
 
 module.exports = router;
