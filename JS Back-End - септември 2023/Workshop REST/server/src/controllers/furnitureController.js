@@ -71,8 +71,10 @@ router.put("/:furnitureId", async (req, res) => {
 
 router.delete("/:furnitureId", async (req, res) => {
   try {
-    const { furnitureId } = req.body;
-    await furnitureData.delete(furnitureId);
+    const { furnitureId } = req.params;
+    await furnitureService.delete(furnitureId);
+  
+    res.status(200).end()
   } catch ({ message }) {
     res.status(400).json({ message });
   }
