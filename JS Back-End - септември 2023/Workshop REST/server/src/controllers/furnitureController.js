@@ -60,11 +60,21 @@ router.put("/:furnitureId", async (req, res) => {
       year,
       _ownerId: req.user._id,
     };
-    
-    await furnitureService.update(furnitureId,furnitureData);
+
+    await furnitureService.update(furnitureId, furnitureData);
+
+    res.status(200).end();
   } catch ({ message }) {
     res.status(400).json({ message });
   }
 });
 
+router.delete("/:furnitureId", async (req, res) => {
+  try {
+    const { furnitureId } = req.body;
+    await furnitureData.delete(furnitureId);
+  } catch ({ message }) {
+    res.status(400).json({ message });
+  }
+});
 module.exports = router;
